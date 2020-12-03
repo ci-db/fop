@@ -2,33 +2,34 @@
 FROM ubuntu
 
 # set path for the FOP installation
-#ENV PATH "$PATH:/usr/local/fop-2.5/fop"
-#ENV PATH "$PATH:/usr/local/fop-2.5/mr_fop"
+ENV PATH "$PATH:/usr/local/fop-2.5/fop"
 
 # update lists of packages
 RUN apt-get update
 
 # install the latest version of OpenJRE
-RUN apt-get install -y default-jre
+RUN apt-get install -y unzip default-jre
 
 # install wget
-#RUN apt-get install -y wget
+RUN apt-get install -y wget
 
 # get the version 2.5 of FOP
-# RUN wget http://ftp.download-by.net/apache/xmlgraphics/fop/binaries/fop-2.5-bin.tar.gz
+RUN wget http://ftp.download-by.net/apache/xmlgraphics/fop/binaries/fop-2.5-bin.tar.gz
+
+RUN wget https://jztkft.dl.sourceforge.net/project/saxon/Saxon-HE/10/Java/SaxonHE10-3J.zip
+
 # unpack FOP into /usr/local
-#RUN tar -xvzf fop-2.5-bin.tar.gz -C /usr/local
+RUN tar -xvzf fop-2.5-bin.tar.gz -C /usr/local
 
-# FOP
-RUN apt-get update && apt-get install -y fop libsaxon-java libsaxonb-java 
 
-ADD scripts/fop_cidb /usr/local/bin/fop_cidb
+RUN mkdir -p /cidb-lib/java/
+RUN unzip SaxonHE10-3J.zip -d  /cidb-lib/java/
 
-RUN chmod +x  /usr/local/bin/fop_cidb
+ADD scripts/fopsaxon /usr/local/bin/fopsaxon
+RUN chmod +x  /usr/local/bin/fopsaxon
 
 # entrypoint 
-ENTRYPOINT ["fop_cidb"]
-
+ENTRYPOINT ["fopsaxon"]
 
 # default command will print the current version of FOP
 CMD ["-version"]

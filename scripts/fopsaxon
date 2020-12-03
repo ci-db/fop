@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# set this based on your platform's install location
+SAXONPATH=/cidb-lib/java/saxon-he-10.3.jar
+
+if [ "$OS" = "Windows_NT" ] ; then
+    pathSepChar=";"
+else
+    pathSepChar=":"
+fi
+
+STF=-Djavax.xml.transform.TransformerFactory=net.sf.saxon.TransformerFactoryImpl
+
+if [ -n "$FOP_OPTS" ] ; then
+  FOP_OPTS="$STF $FOP_OPTS"
+else
+  FOP_OPTS=$STF
+fi
+
+if [ -n "$CLASSPATH" ] ; then
+  CLASSPATH=$CLASSPATH${pathSepChar}$SAXONPATH
+else
+  CLASSPATH=$SAXONPATH
+fi
+
+export CLASSPATH
+export FOP_OPTS
+fop "$@"
