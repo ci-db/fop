@@ -1,6 +1,6 @@
 # About
 
-a Docker image for running [Apache™ FOP](https://xmlgraphics.apache.org/fop/). with saxon Suport 
+a Docker image for running [Apache™ FOP](https://xmlgraphics.apache.org/fop/) with saxon Support 
 
 # How To USE
 
